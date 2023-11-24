@@ -44,7 +44,7 @@ while true; do
         2) perform_put;;
     esac
 
-    if [ $((RANDOM % 10)) -eq 0 ]; then
+    if [ $((RANDOM % 100)) -eq 0 ]; then
         # 10% chance to sleep between 1 and 10 seconds
         SLEEP_TIME=$((RANDOM % 10 + 1))
         echo "Sleeping for $SLEEP_TIME seconds..."
