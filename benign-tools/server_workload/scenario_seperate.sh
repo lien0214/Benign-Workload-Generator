@@ -1,15 +1,18 @@
 #!/bin/bash
 
+RANDOM=$(date +%s%N)
+
 # Define server details
-SERVER=192.168.0.10
+# need to modify server ip to the correct ip
+SERVER=192.168.2.1
 PORT=80
 URI=/items
 
-NUM_REQUESTS=1
+MAX_REQUESTS_PER_CYCLE=5
 
 perform_get() {
     echo "Performing GET request"
-    httperf --server $SERVER --port $PORT --uri $URI --num-calls $NUM_REQUESTS
+    httperf --server $SERVER --port $PORT --uri $URI --num-calls 1
 }
 
 perform_post() {
@@ -23,15 +26,23 @@ perform_put() {
     curl -X PUT -H "Content-Type: application/json" -d '{"name":"Updated Item"}' http://$SERVER:$PORT$URI/$ITEM_ID
 }
 
-# Infinite loop for continuous testing
 while true; do
     REQUEST_TYPE=$((RANDOM % 3))
 
-    case $REQUEST_TYPE in
-        0) perform_get;;
-        1) perform_post;;
-        2) perform_put;;
-    esac
+    num_requests_this_cycle=$((RANDOM % MAX_REQUESTS_PER_CYCLE + 1))
+
+    for (( i=0; i<num_requests_this_cycle; i++ )); do
+        REQUEST_TYPE=$((RANDOM % 3))
+
+        case $REQUEST_TYPE in
+            0) perform_get;;
+            1) perform_post;;
+            2) perform_put;;
+        esac
+    done
+
+    # Wait for all background processes (HTTP requests) to finish
+    wait
 
     SLEEP_TIME=$((RANDOM % 5 + 1))
     echo "Sleeping for $SLEEP_TIME seconds..."
