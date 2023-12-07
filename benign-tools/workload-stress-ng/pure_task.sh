@@ -13,7 +13,7 @@ PID_log="PID.log"
 
 # Iterate over each class and run stress-ng
 for classname in "${classes[@]}"; do
-    stress-ng --class "$classname" --seq 1 --timeout 2m &
+    stress-ng --class "$classname" --seq 1 --timeout 2m >> "stress-ng-output.log" 2>&1 &
     pid=$!
     echo "stress-ng --class $classname: $pid" >> "$PID_log"
     echo "stress-ng --class $classname: $pid"
