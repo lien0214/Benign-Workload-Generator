@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# clear /var/log/audit/ and start logging
+sudo rm -f /var/log/audit/*
+sudo auditctl -a always,exit -F arch=b64 -S all -k LALA
+
 # Define the class names
 classes=(
     "cpu" "io" "vm" "disk" "network" "cpu-cache" "device" "security"
@@ -21,3 +25,6 @@ for classname in "${classes[@]}"; do
 done
 
 echo "All stress tests completed."
+
+# end logging
+sudo auditctl -d always,exit -F arch=b64 -S all -k LALA

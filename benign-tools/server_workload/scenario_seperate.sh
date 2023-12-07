@@ -27,7 +27,7 @@ perform_put() {
 }
 
 while true; do
-    REQUEST_TYPE=$((RANDOM % 3))
+    REQUEST_TYPE=$1
 
     num_requests_this_cycle=$((RANDOM % MAX_REQUESTS_PER_CYCLE + 1))
 
