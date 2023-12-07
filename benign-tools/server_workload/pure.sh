@@ -8,7 +8,7 @@ SERVER=192.168.2.1
 PORT=80
 URI=/items
 
-MAX_REQUESTS_PER_CYCLE=5
+REQUESTS_NUM=10000
 
 perform_get() {
     echo "Performing GET request"
@@ -26,25 +26,16 @@ perform_put() {
     curl -X PUT -H "Content-Type: application/json" -d '{"name":"Updated Item"}' http://$SERVER:$PORT$URI/$ITEM_ID
 }
 
-while true; do
-    REQUEST_TYPE=$((RANDOM % 3))
+REQUEST_TYPE=$1
 
-    num_requests_this_cycle=$((RANDOM % MAX_REQUESTS_PER_CYCLE + 1))
 
-    for (( i=0; i<num_requests_this_cycle; i++ )); do
-        REQUEST_TYPE=$((RANDOM % 3))
-
-        case $REQUEST_TYPE in
-            0) perform_get;;
-            1) perform_post;;
-            2) perform_put;;
-        esac
-    done
-
-    # Wait for all background processes (HTTP requests) to finish
-    wait
-
-    SLEEP_TIME=$((RANDOM % 5 + 1))
-    echo "Sleeping for $SLEEP_TIME seconds..."
-    sleep $SLEEP_TIME
+for (( i=0; i<$REQUESTS_NUM; i++ )); do
+    case $REQUEST_TYPE in
+        0) perform_get;;
+        1) perform_post;;
+        2) perform_put;;
+    esac
 done
+
+# Wait for all background processes (HTTP requests) to finish
+wait

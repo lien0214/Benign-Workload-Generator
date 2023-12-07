@@ -47,4 +47,4 @@ def update_item(item_id):
 if __name__ == '__main__':
     init_db()
     # Run the app publicly on the network
-    app.run(host='192.168.2.1', port=80, debug=True)
+    app.run(host='127.0.0.1', port=8080, debug=True)
