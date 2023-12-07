@@ -4,18 +4,17 @@
 sudo rm -f /var/log/audit/*
 sudo auditctl -a always,exit -F arch=b64 -S all -k LALA
 
-# Define the class names
 classes=(
     "cpu" "io" "vm" "disk" "network" "cpu-cache" "device" "security"
     "interrupt" "filesystem" "memory" "os" "pipe" "scheduler"
 )
 
-# Create or clear the log file
+# Create and clear the log file
 echo "create log file"
 PID_log="PID.log"
 > "$PID_log"
 
-# Iterate over each class and run stress-ng
+# run workload
 for classname in "${classes[@]}"; do
     stress-ng --class "$classname" --seq 1 --timeout 2m >> "stress-ng-output.log" 2>&1 &
     pid=$!
