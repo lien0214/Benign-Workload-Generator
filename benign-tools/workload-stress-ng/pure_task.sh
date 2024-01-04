@@ -1,13 +1,16 @@
 #!/bin/bash
 
-sudo auditctl -a always,exit -F arch=b64 -S all -k LALA
 
 # class
 # "cpu" "cpu-cache" "device" "io" "network" "interrupt" "filesystem" "memory"
 # "os" "pipe" "scheduler" "security" "vm"
+class=$1
+
+sleep 5s
+sudo auditctl -a always,exit -F arch=b64 -S all -k LALA
 
 classes=(
-    "pipe"
+    $class
 )
 
 # Create and clear the log file
@@ -28,5 +31,6 @@ echo "All stress tests completed."
 
 # end logging
 sudo auditctl -d always,exit -F arch=b64 -S all -k LALA
-sudo mv /var/log/audit/audit.log .
-# sudo cp /var/log/audit/audit.log log_pure_task
+sleep 5s
+sudo mkdir /media/sf_shared_folder/new
+sudo mv /var/log/audit/audit.log /media/sf_shared_folder/new
