@@ -4,10 +4,11 @@
 # class
 # "cpu" "cpu-cache" "device" "io" "network" "interrupt" "filesystem" "memory"
 # "os" "pipe" "scheduler" "security" "vm"
-class=$1
+class=""
 
 sleep 5s
 sudo auditctl -a always,exit -F arch=b64 -S all -k LALA
+sleep 5s
 
 classes=(
     $class
@@ -29,8 +30,10 @@ done
 
 echo "All stress tests completed."
 
-# end logging
+sleep 5s
 sudo auditctl -d always,exit -F arch=b64 -S all -k LALA
 sleep 5s
-sudo mkdir /media/sf_shared_folder/new
-sudo mv /var/log/audit/audit.log /media/sf_shared_folder/new
+
+sudo mkdir /media/sf_shared_folder/$class
+sudo mv /var/log/audit/audit.log .
+sudo mv ./*.log /media/sf_shared_folder/$class
