@@ -12,7 +12,7 @@ REQUESTS_NUM=10000
 
 perform_get() {
     echo "Performing GET request"
-    httperf --server $SERVER --port $PORT --uri $URI --num-calls 1
+    curl http://$SERVER:$PORT$URI
 }
 
 perform_post() {
