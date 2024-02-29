@@ -3,7 +3,7 @@ import time
 import requests
 
 # Replace these with your actual server details
-SERVER_URL = "http://<server_ip>:8080/items"
+SERVER_URL = "http://localhost:8080/items"
 # For PUT requests, specify an item ID to update
 ITEM_ID_FOR_PUT = 1
 
