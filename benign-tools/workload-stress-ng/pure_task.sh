@@ -19,7 +19,7 @@ PID_log="PID.log"
 
 # run workload
 for classname in "${classes[@]}"; do
-    stress-ng --class "$classname" --seq 1 --timeout 20s --timestamp >> "stress-ng-output.log" 2>&1 &
+    stress-ng --class "$classname" --seq 1 --timeout 2m --timestamp >> "stress-ng-output.log" 2>&1 &
     pid=$!
     echo "stress-ng --class $classname: $pid" >> "$PID_log"
     echo "stress-ng --class $classname: $pid"
