@@ -1,6 +1,7 @@
 import multiprocessing
 import time
 import requests
+import argparse  # Import the argparse module
 
 # Replace these with your actual server details
 SERVER_URL = "http://localhost:8080/items"
@@ -42,8 +43,17 @@ def run_process(target):
     return process
 
 if __name__ == "__main__":
-    # Choose the request type here: send_get_request, send_post_request, send_put_request
-    request_type = send_get_request  # As an example, using GET request
+    parser = argparse.ArgumentParser(description="Send HTTP requests concurrently.")
+    parser.add_argument("--method", choices=["GET", "POST", "PUT"], required=True, help="HTTP method to use")
+    args = parser.parse_args()
+
+    # Map method argument to the corresponding function
+    method_functions = {
+        "GET": send_get_request,
+        "POST": send_post_request,
+        "PUT": send_put_request
+    }
+    request_type = method_functions[args.method]
 
     processes = [run_process(request_type) for _ in range(10)]
     
