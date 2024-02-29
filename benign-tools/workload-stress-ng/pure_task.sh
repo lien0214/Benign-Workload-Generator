@@ -6,7 +6,7 @@
 # "os" "pipe" "scheduler" "security" "vm"
 class=$1
 
-sudo auditctl -a always,exit -F arch=b64 -S all -k LALA
+# sudo auditctl -a always,exit -F arch=b64 -S all -k LALA
 
 classes=(
     $class
