@@ -1,51 +1,70 @@
-# Various-Attack-Scenario-Generation
+# Benign Workload Generator
 
-## Benign Workload Generator Manual
+The Benign Workload Generator is a suite of tools designed to simulate various workloads on servers and systems. These tools can be used for stress testing, performance benchmarking, or simulating real-world usage scenarios.
 
-Three Benign Tools:
-- httperf
-- stress-ng
-- xdisk
+## Structure and Key Scripts
 
-### httperf
+### 1. Server Workload Scripts
 
-#### Installation
+- **`pure.sh`**:
+  - Simulates a specific HTTP workload by performing repeated `GET`, `POST`, and `PUT` requests to a given server.
+  - Server details (IP, port, and URI) and the number of requests can be customized.
 
-```shell
-sudo apt install httperf
-```
+- **`scenario_combine.sh`**:
+  - Simulates a more dynamic HTTP workload with randomized request types (`GET`, `POST`, `PUT`) and adjustable concurrency limits.
+  - Includes random pauses to simulate traffic patterns.
 
-#### Manual
+### 2. System Workload Scripts
 
-<details>
-  <summary>Click to expand!</summary>
-    
-  Usage: httperf [-hdvV] [--add-header S] [--burst-length N] [--client N/N]  
-        [--close-with-reset] [--debug N] [--failure-status N]  
-        [--help] [--hog] [--http-version S] [--max-connections N]  
-        [--max-piped-calls N] [--method S] [--no-host-hdr]  
-        [--num-calls N] [--num-conns N] [--session-cookies]  
-        [--period [d|u|e]T1[,T2]|[v]T1,D1[,T2,D2]...[,Tn,Dn]]  
-        [--print-reply [header|body]] [--print-request [header|body]]  
-        [--rate X] [--recv-buffer N] [--retry-on-failure] [--send-buffer N]  
-        [--server S|--servers file] [--server-name S] [--port N] [--uri S] [--myaddr S]  
-        [--think-timeout X] [--timeout X] [--verbose] [--version]  
-        [--wlog y|n,file] [--wsess N,N,X] [--wsesslog N,X,file]  
-        [--wset N,X]  
-        [--runtime X]  
-        [--use-timer-cache]  
-        [--periodic-stats]  
-    
-</details>
+- **`main-pure-task.sh`**:
+  - Executes a series of predefined stress-test scripts, each targeting a specific system component or operation:
+    - `hdd`: Tests hard disk I/O operations.
+    - `io`: Simulates general input/output operations.
+    - `vm`: Tests virtual memory usage.
+    - `matrix`: Performs computational tasks like matrix calculations.
+    - `fork` and `vfork`: Stress-tests process creation.
+    - Additional scripts for file locking, caching, socket operations, and more.
+  - Each script runs for a fixed duration (default: 120 seconds).
 
-### stress-ng
+### 3. Supporting Workload Scripts
 
-#### Installation
+- The `pure-task` folder contains specialized scripts that are executed by `main-pure-task.sh`. Each script is focused on a specific workload category (e.g., `aio.sh`, `malloc.sh`, `timer.sh`, etc.).
 
-```shell
-sudo apt install stress-ng
-```
+## Usage
 
-#### Manual
+### Prerequisites
 
-[link](https://manpages.ubuntu.com/manpages/jammy/man1/stress-ng.1.html)
+- Install `curl` for HTTP-based workloads.
+- Install `httperf` for performance benchmarking (used in some scripts).
+- Ensure you have sufficient system resources for stress testing.
+
+### Running the Scripts
+
+1. **Server Workloads**:
+
+   - Update server details in `pure.sh` and `scenario_combine.sh` (e.g., IP, port, URI).
+   - Execute `pure.sh` or `scenario_combine.sh` to start workload generation.
+
+   Example:
+
+   ```bash
+   bash pure.sh 0  # Perform GET requests
+   ```
+
+2. **System Workloads**:
+
+   - Navigate to the directory containing `main-pure-task.sh`.
+
+   - Run the script:
+
+     ```bash
+     bash main-pure-task.sh
+     ```
+
+## Contribution
+
+Feel free to contribute by adding new workload scripts or improving the existing ones. Make sure to follow the coding guidelines provided in the project.
+
+## License
+
+This project is licensed under the MIT License.
